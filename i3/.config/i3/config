@@ -54,10 +54,18 @@ bindsym $mod+d exec rofi -show run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym $mod+h exec i3-msg border pixel 1; focus left
+bindsym $mod+j exec i3-msg border pixel 1; focus down
+bindsym $mod+k exec i3-msg border pixel 1; focus up
+bindsym $mod+l exec i3-msg border pixel 1; focus right
+bindsym $mod+h --release exec i3-msg border pixel 0
+bindsym $mod+j --release exec i3-msg border pixel 0
+bindsym $mod+k --release exec i3-msg border pixel 0
+bindsym $mod+l --release exec i3-msg border pixel 0
+
+# check focus
+bindsym $mod+semicolon exec i3-msg border pixel 1
+bindsym $mod+semicolon --release exec i3-msg border pixel 0
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -175,12 +183,15 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 for_window [class=".*"] border pixel 0
+
+# Windows
+assign [class = "InputOutput"] 1
+assign [class = "Firefox"] 3
 gaps inner 10
 gaps outer 5
-exec compton
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-        status_command i3status
-}
+# Startup
+exec --no-startup-id compton
+exec --no-startup-id "setxkbmap -option caps:escape"
+exec --no-startup-id ~/.config/wpg/wp_init.sh
+exec_always --no-startup-id ~/.config/polybar/launch.sh
